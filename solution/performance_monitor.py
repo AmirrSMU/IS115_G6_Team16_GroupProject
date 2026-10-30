@@ -8,28 +8,91 @@ from typing import Any, Dict, List, Optional
 
 from simulator.loaders import day_input_paths
 
+#     parcels: List[Dict[str, str]],
+#     distances: List[Dict[str, str]],
+#     config: Dict[str, Any],
+#     events: List[Dict[str, Any]],
+# ) -> Dict[str, Any]:
+#     """Return a JSON-serializable dictionary for the chosen performance metric.
 
-def calculate_metrics(
-    parcels: List[Dict[str, str]],
-    distances: List[Dict[str, str]],
-    config: Dict[str, Any],
-    events: List[Dict[str, Any]],
-) -> Dict[str, Any]:
-    """Return a JSON-serializable dictionary for the chosen performance metric.
+#     parcels and distances are the rows of the day's CSV files, config is the
+#     contents of config.json, and events are the records from the run's log.
+#     CSV values are strings, so convert them before calculating. In particular,
+#     parcel times are "HH:MM" strings while event times are minutes after
+#     midnight: "17:00" is 17 * 60 = 1020.
+#     """
 
-    parcels and distances are the rows of the day's CSV files, config is the
-    contents of config.json, and events are the records from the run's log.
-    CSV values are strings, so convert them before calculating. In particular,
-    parcel times are "HH:MM" strings while event times are minutes after
-    midnight: "17:00" is 17 * 60 = 1020.
-    """
+#     # Illustration only: replace or extend this with your chosen metric.
+#     number_of_trips = 0
+#     for event in events:
+#         if event["event_type"] == "hub_departure":
+#             number_of_trips += 1
+#     return {"number_of_trips": number_of_trips}
 
-    # Illustration only: replace or extend this with your chosen metric.
-    number_of_trips = 0
+def calculate_metrics(parcels, distances, config, events):
+    """Calculate the on-time delivery rate (OTDR)."""
+
+    # Step 1: Count all parcels arriving during the day
+    total_parcels = len(parcels)
+
+    # Step 2: Store parcel records by their unique ID
+    parcel_lookup = {
+        p["parcel_id"]: p
+        for p in parcels
+    }
+
+    # Step 3: Track how many parcels are delivered on time
+    on_time_deliveries = 0
+    delivered_ids = set()
+
+    # Step 4: Examine the simulation's delivery events
     for event in events:
-        if event["event_type"] == "hub_departure":
-            number_of_trips += 1
-    return {"number_of_trips": number_of_trips}
+
+        if event["event_type"] != "delivery":
+            continue
+
+        parcel_id = event["parcel_id"]
+
+        # Avoid counting the same parcel twice
+        if parcel_id in delivered_ids:
+            continue
+
+        parcel = parcel_lookup[parcel_id]
+        delivered_ids.add(parcel_id)
+
+        # Actual delivery time is already in minutes
+        delivery_time = float(event["time"])
+
+        # Convert HH:MM into minutes after midnight
+        start_h, start_m = map(
+            int, parcel["delivery_window_start"].split(":")
+        )
+
+        end_h, end_m = map(
+            int, parcel["delivery_window_end"].split(":")
+        )
+
+        window_start = start_h * 60 + start_m
+        window_end = end_h * 60 + end_m
+
+        # Step 5: Check whether delivery was on time
+        if window_start <= delivery_time <= window_end:
+            on_time_deliveries += 1
+
+    # Step 6: Calculate the final metric
+    otdr = (
+        on_time_deliveries / total_parcels * 100
+        if total_parcels > 0
+        else 0.0
+    )
+
+    return {
+        "total_parcels": total_parcels,
+        "delivered_parcels": len(delivered_ids),
+        "on_time_deliveries": on_time_deliveries,
+        "otdr_percent": round(otdr, 2)
+    }
+
 
 
 def main(argv: Optional[List[str]] = None) -> int:
