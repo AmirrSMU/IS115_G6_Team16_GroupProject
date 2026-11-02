@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from solution.policies import localSearch_nnd
+
 # Project root
 ROOT = Path(__file__).resolve().parent
 
@@ -14,6 +16,8 @@ ALGORITHMS = [
     "baseline",
     "heuristic_edf",
     "heuristic_feasible_edf",
+    "heuristic_nnd",
+    "localSearch_nnd"
     # "heuristic_nn",
     # "heuristic_hybrid",
 ]

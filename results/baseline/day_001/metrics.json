@@ -1,3 +1,6 @@
 {
-  "number_of_trips": 20
+  "total_parcels": 799,
+  "delivered_parcels": 349,
+  "on_time_deliveries": 213,
+  "otdr_percent": 26.66
 }
