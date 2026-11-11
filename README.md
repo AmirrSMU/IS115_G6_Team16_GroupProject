@@ -20,18 +20,6 @@ This project compares several dispatch policies for the IS115 dispatch simulator
 From the project root, run the simulation and calculate its OTDR:
 ```py run_experiments.py```
 
-
-## Results summary
-Metric: On-Time Delivery Rate (higher is better).
-
-| Policy | On-Time Delivery Rate |
-|---|---:|
-| Baseline (First In First Out) | [27.41]% |
-| Heuristic (Earliest Deadline First) | [17.99]% |
-| Heuristic Feasible (Feasibility-Aware Earliest Deadline First )| [41.65]% |
-| Heuristic (Greedy Nearest Neighbour)| [79.64]% |
-| Heuristic Feasible (Local Search on NND)| [77.99]% |
-
 ## Results summary
 Metric: On-Time Delivery Rate (higher is better).
 
