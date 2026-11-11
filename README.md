@@ -25,11 +25,11 @@ Metric: On-Time Delivery Rate (higher is better).
 
 | Policy | On-Time Delivery Rate |
 |---|---:|
-| Baseline (First In First Out) | [27.41]% |
-| Heuristic (Earliest Deadline First) | [17.99]% |
-| Heuristic Feasible (Feasibility-Aware Earliest Deadline First )| [41.65]% |
-| Heuristic (Greedy Nearest Neighbour)| [79.64]% |
-| Heuristic Feasible (Local Search on NND)| [77.99]% |
+| Baseline (First In First Out) | 27.41% |
+| Heuristic (Earliest Deadline First) | 17.99% |
+| Heuristic Feasible (Feasibility-Aware Earliest Deadline First )| 41.65% |
+| Heuristic (Greedy Nearest Neighbour)| 79.64% |
+| Heuristic Feasible (Local Search on NND)| 77.99% |
 
 The main difference between the algorithms is how they balance simplicity with making better delivery decisions. FIFO and EDF are easier to implement, but they consider fewer factors when choosing which parcels to deliver. FA-EDF improves on this by checking whether parcels can arrive on time, while NND also considers the distance between delivery locations. Local Search goes a step further by trying to improve routes that have already been planned. However, improving one vehicle's route does not always mean better overall performance, as it may affect the vehicle's availability for later deliveries. 
 
