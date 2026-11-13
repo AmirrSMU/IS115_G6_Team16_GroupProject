@@ -2,6 +2,9 @@
 
 **Team 16:** Muhammad Amiruddin, Chua Jun Lin Jayden
 
+## NOTE
+We did not use **helpers.py** for shared helper functions.
+
 ## Overview
 
 This project compares several dispatch policies for the IS115 dispatch simulator using the On-Time Delivery Rate (OTDR).
@@ -16,9 +19,84 @@ This project compares several dispatch policies for the IS115 dispatch simulator
 - `run_experiments.py` — running all algorithms and giving a summary for comparison
 
 ## Run the experiments file
-
+- This experiments file was created with the aid of AI to help streamline and quicken to process of running and comparing the different algorithms created.
 From the project root, run the simulation and calculate its OTDR:
 ```py run_experiments.py```
+
+### Command to execute baseline.py
+Run the simulator and calculate OTDR for all 20 days from the project root:
+
+```powershell
+1..20 | ForEach-Object {
+    $dayId = "day_{0:D3}" -f $_
+    $outputDir = "results/baseline.py/$dayId"
+
+    py -m simulator --policy solution.policies.baseline --data data --day $dayId --output $outputDir
+    py -m solution.performance_monitor --data data --day $dayId --log "$outputDir/log.txt"
+}
+```
+
+Each day’s event log and `metrics.json` are saved in its corresponding folder under `results/heuristic_nnd/`.
+
+### Command to execute heuristic_edf.py
+Run the simulator and calculate OTDR for all 20 days from the project root:
+
+```powershell
+1..20 | ForEach-Object {
+    $dayId = "day_{0:D3}" -f $_
+    $outputDir = "results/heuristic_edf/$dayId"
+
+    py -m simulator --policy solution.policies.heuristic_edf --data data --day $dayId --output $outputDir
+    py -m solution.performance_monitor --data data --day $dayId --log "$outputDir/log.txt"
+}
+```
+
+Each day’s event log and `metrics.json` are saved in its corresponding folder under `results/heuristic_nnd/`.
+
+### Command to execute heuristic_feasible_edf.py
+Run the simulator and calculate OTDR for all 20 days from the project root:
+
+```powershell
+1..20 | ForEach-Object {
+    $dayId = "day_{0:D3}" -f $_
+    $outputDir = "results/heuristic_feasible_edf/$dayId"
+
+    py -m simulator --policy solution.policies.heuristic_feasible_edg --data data --day $dayId --output $outputDir
+    py -m solution.performance_monitor --data data --day $dayId --log "$outputDir/log.txt"
+}
+```
+
+Each day’s event log and `metrics.json` are saved in its corresponding folder under `results/heuristic_nnd/`.
+
+### Command to execute heuristic_nnd.py
+Run the simulator and calculate OTDR for all 20 days from the project root:
+
+```powershell
+1..20 | ForEach-Object {
+    $dayId = "day_{0:D3}" -f $_
+    $outputDir = "results/heuristic_nnd/$dayId"
+
+    py -m simulator --policy solution.policies.heuristic_nnd --data data --day $dayId --output $outputDir
+    py -m solution.performance_monitor --data data --day $dayId --log "$outputDir/log.txt"
+}
+```
+
+Each day’s event log and `metrics.json` are saved in its corresponding folder under `results/heuristic_nnd/`.
+
+### Command to execute localSearch_nnd.py
+Run the simulator and calculate OTDR for all 20 days from the project root:
+
+```powershell
+1..20 | ForEach-Object {
+    $dayId = "day_{0:D3}" -f $_
+    $outputDir = "results/localSearch_nnd/$dayId"
+
+    py -m simulator --policy solution.policies.localSearch_nnd --data data --day $dayId --output $outputDir
+    py -m solution.performance_monitor --data data --day $dayId --log "$outputDir/log.txt"
+}
+```
+
+Each day’s event log and `metrics.json` are saved in its corresponding folder under `results/heuristic_nnd/`.
 
 ## Results summary
 Metric: On-Time Delivery Rate (higher is better).
